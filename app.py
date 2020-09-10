@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://User_name:Password@localhost/Postsdb' #we are defining the database and the path to store the database file
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://sharan_temp:/*18981Ach0535*/@localhost/Postsdb' #we are defining the database and the path to store the database file
 
 db = SQLAlchemy(app) #the current app file is linked to the database
 
@@ -22,18 +22,6 @@ class BlogPost(db.Model) :   #we just created a model if we want to use to we ha
     return 'Blog Post' + str(self.id)
 
 
-# all_posts = [
-#   {
-#     'title' : 'post 1',
-#     'content' : 'this is the content of post 1',
-#     'author' : 'kargill'
-#   },
-#   {
-#     'title' : 'post 2',
-#     'content' : 'this is the content of post 2'
-#   }
-# ]
-
 @app.route("/")
 def home() :
   return render_template("index.html")
@@ -42,21 +30,6 @@ def home() :
 @app.route("/posts", methods=['GET', 'POST'])
 def posts() :
 
-  if(request.method == 'POST') :
-    post_title = request.form['title']
-    post_content = request.form['content']
-    post_author = request.form['author']
-
-    if(post_author == "") :
-      post_author = 'N/A'
-
-    new_post = BlogPost(title=post_title, content=post_content, author=post_author) #this is used to create a new row object for the model/table by using the model name
-    db.session.add(new_post) #here we are stating a session and adding the new object to that model table
-    db.session.commit() #we should commit the session for the changes to be visible in the database
-    
-    return redirect('/posts') #we are redirecting to the posts page
-
-  else :
     all_posts = BlogPost.query.order_by(BlogPost.date_posted).all() #order_by makes the values sorted from the model based on the value given to the function
     # .all() function is used to fetch all the values the values
 
@@ -69,6 +42,7 @@ def delete(id) :
   db.session.delete(post_to_delete)
   db.session.commit()
   return redirect('/posts')
+
 
 @app.route('/posts/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id) :
@@ -94,7 +68,25 @@ def edit(id) :
   else :
     return render_template('edit.html', post=post_to_edit)
 
+
+@app.route('/posts/new', methods=['GET', 'POST'])
+def new_post() :
+  if(request.method == 'POST') :
+    post_title = request.form['title']
+    post_content = request.form['content']
+    post_author = request.form['author']
+
+    if(post_author == "") :
+      post_author = 'N/A'
+
+    new_post = BlogPost(title=post_title, content=post_content, author=post_author) #this is used to create a new row object for the model/table by using the model name
+    db.session.add(new_post) #here we are stating a session and adding the new object to that model table
+    db.session.commit() #we should commit the session for the changes to be visible in the database
+    
+    return redirect('/posts') #we are redirecting to the posts page
   
+  else :
+    return render_template('new_post.html')
 
 # @app.route("/home/users/<string:name>/posts/<int:num>") #using the a part of url as a parameter #used in dynamic url's where we fetch a user record based on his name in the url ,. etc
 # def hello_world(name, num) :

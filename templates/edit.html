@@ -11,20 +11,21 @@
   <hr>
   
   <h1>Edit the Post</h1>
-    <form action="/posts/edit/{{post.id}}" method="POST">
 
-      <label>Title:
-        <input type="text" name="title" id="title" value={{post.title}} required>
-      </label><br>
-      <label>Content:
-        <input type="text" name="content" id="content" value="{{post.content}}" required>
-      </label><br>
-      <label>Author:
-        <input type="text" name="author" value="{{post.author}}" id="author">
-      </label><br>
-      <input type="submit" name="submit" id="submit" value="edit">
-      
-    </form>
+  <form action="/posts/edit/{{post.id}}" method="POST">
+
+    <label>Title:</label>
+    <input type="text" class="form-control" name="title" id="title" value="{{post.title}}" required>
+    <br>
+    <label>Content:</label>
+    <textarea rows="3" type="text" class="form-control" name="content" id="content" required>{{post.content}}</textarea>
+    <br>
+    <label>Author:</label>
+    <input type="text" class="form-control" name="author" value="{{post.author}}" id="author">
+    <br>
+    <input class="btn btn-outline-success" type="submit" name="submit" id="submit" value="Save">
+    
+  </form>
 
   <hr>
 

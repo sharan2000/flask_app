@@ -8,41 +8,26 @@
 
 
 {% block body %} 
-
+  <div style="margin-top: 10px;">
+    <h1 style="display: inline; font-weight: bold;">Posts</h1> 
+    <a class="btn btn-success float-right" role="button" href="/posts/new" style="margin-top: 5px;">+ New Post</a>
+  </div>
   <hr>
-    <h1>Enter a new post</h1>
-    <form action="/posts" method="POST">
-
-      <label>Title:
-        <input type="text" name="title" id="title" required>
-      </label><br>
-      <label>Content:
-        <input type="text" name="content" id="content" required>
-      </label><br>
-      <label>Author:
-        <input type="text" name="author" id="author">
-      </label><br>
-      <input type="submit" name="submit" id="submit" value="post">
-      
-    </form>
-
-  <hr>
-
-  <h1>Posts</h1>
-
   {% for post in posts %}
 
     <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
+    <p style="margin-bottom: 5px; white-space:pre-wrap;">{{ post.content }}</p>
 
     {% if post.author %} 
-      <p>Author : {{post.author}}</p>
+      <small>Posted by : {{post.author}} on {{post.date_posted}}</small>
     {% else %}
-      <p>Author : N/A </p>
+      <small>Posted by : Unknown on {{post.date_posted}}</small>
     {% endif %}
+    <br>
 
-    <a href="/posts/delete/{{post.id}}">Delete</a>
-    <a href="/posts/edit/{{post.id}}">Edit</a>
-
+    <a class="btn btn-warning btn-sm" href="/posts/delete/{{post.id}}" style="color:black; margin-top: 5px;" role="button">Delete</a>
+    <a class="btn btn-secondary btn-sm" href="/posts/edit/{{post.id}}" style="color:white; margin-top: 5px;" role="button">Edit</a>
+    
+    <br><br>
   {% endfor %}
 {% endblock %}
